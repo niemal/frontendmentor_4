@@ -3,6 +3,7 @@ import { AddToCartButton, ButtonCartLetters } from "../Product";
 import { useContext, useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { QUERIES } from "../constants";
+import ClickableWrapper from "../ClickableWrapper";
 
 const openUp = keyframes`
   0% {
@@ -134,6 +135,12 @@ const DeleteImage = styled.img`
   width: 25px;
   height: 25px;
   cursor: pointer;
+  border-radius: 8px;
+
+  &:focus {
+    outline: 3px outset var(--color-orange);
+    outline-offset: 0px;
+  }
 `;
 
 function CartCard({ openUp }) {
@@ -180,7 +187,7 @@ function CartCard({ openUp }) {
                 </PriceWrapper>
               </CartItemDetails>
 
-              <DeleteImage
+              <ClickableWrapper
                 onClick={() => {
                   setDisplayContent(false);
                   const tmp = [];
@@ -194,17 +201,25 @@ function CartCard({ openUp }) {
                   setFilled(false);
                   setCart(tmp);
                 }}
-                src={"./assets/icon-delete.svg"}
-                alt={"delete cart entry"}
-              />
+              >
+                <DeleteImage
+                  src={"/frontendmentor_4/assets/icon-delete.svg"}
+                  alt={"delete cart entry image button"}
+                />
+              </ClickableWrapper>
             </CartEntry>
           ))
         )}
 
         {cart && cart.length > 0 ? (
-          <AddToCartButton>
-            <ButtonCartLetters>Checkout</ButtonCartLetters>
-          </AddToCartButton>
+          <ClickableWrapper
+            aria-label={"checkout button"}
+            style={{ marginTop: "8px" }}
+          >
+            <AddToCartButton>
+              <ButtonCartLetters>Checkout</ButtonCartLetters>
+            </AddToCartButton>
+          </ClickableWrapper>
         ) : (
           ""
         )}

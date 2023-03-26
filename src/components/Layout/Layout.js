@@ -5,6 +5,7 @@ import { QUERIES } from "../constants";
 import styled, { keyframes } from "styled-components";
 import HamburgerIcon from "../HamburgerIcon";
 import MobileMenu from "../MobileMenu";
+import ClickableWrapper from "../ClickableWrapper";
 
 const Wrapper = styled.div`
   position: relative;
@@ -69,11 +70,24 @@ const NavWrapper = styled(LeftPanel)`
   }
 `;
 
-const NavEntry = styled.span`
+const NavEntry = styled.a`
+  text-decoration: none;
   font-family: var(--font-primary);
   font-weight: var(--font-weight-regular);
   cursor: pointer;
   user-select: none;
+  transition: all 0.3s ease-in-out;
+  color: var(--color-gray-blue);
+  border-radius: 8px;
+
+  &:hover {
+    color: var(--color-very-dark-blue);
+  }
+
+  &:focus {
+    outline: 2px outset var(--color-orange);
+    outline-offset: 4px;
+  }
 `;
 
 const RightPanel = styled(LeftPanel)`
@@ -90,6 +104,13 @@ const CartContainer = styled.div`
   width: 38px;
   display: grid;
   place-content: center;
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+
+  &:focus {
+    outline: 2px outset var(--color-orange);
+    outline-offset: 5px;
+  }
 `;
 
 const Cart = styled.img`
@@ -136,6 +157,13 @@ const UserAvatar = styled.img`
   height: 40px;
   width: 40px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+
+  &:focus {
+    outline: 2px outset var(--color-orange);
+    outline-offset: 4px;
+  }
 
   @media ${QUERIES.phoneAndSmaller} {
     height: 30px;
@@ -170,7 +198,7 @@ function Layout({ user }) {
   return (
     <Wrapper>
       <LeftPanel>
-        <Logo src={"./assets/logo.svg"} alt={"logo image"} />
+        <Logo src={"/frontendmentor_4/assets/logo.svg"} alt={"logo image"} />
 
         <MobileLogoWrapper>
           <HamburgerIcon
@@ -187,37 +215,56 @@ function Layout({ user }) {
             ""
           )}
           {!mobileMenu ? <MobileMenu openUp={false} /> : ""}
-          <MobileLogo src={"./assets/logo.svg"} alt={"logo image"} />
+          <MobileLogo
+            src={"/frontendmentor_4/assets/logo.svg"}
+            alt={"logo image"}
+          />
         </MobileLogoWrapper>
 
-        <NavWrapper>
-          <NavEntry>Collections</NavEntry>
-          <NavEntry>Men</NavEntry>
-          <NavEntry>Women</NavEntry>
-          <NavEntry>About</NavEntry>
-          <NavEntry>Contact</NavEntry>
+        <NavWrapper aria-label={"Site navigation menu"}>
+          <ClickableWrapper href={"#"}>
+            <NavEntry>Collections</NavEntry>
+          </ClickableWrapper>
+          <ClickableWrapper href={"#"}>
+            <NavEntry>Men</NavEntry>
+          </ClickableWrapper>
+          <ClickableWrapper href={"#"}>
+            <NavEntry>Women</NavEntry>
+          </ClickableWrapper>
+          <ClickableWrapper href={"#"}>
+            <NavEntry>About</NavEntry>
+          </ClickableWrapper>
+          <ClickableWrapper href={"#"}>
+            <NavEntry>Contact</NavEntry>
+          </ClickableWrapper>
         </NavWrapper>
       </LeftPanel>
       <RightPanel>
-        <CartContainer
+        <ClickableWrapper
           onClick={() => {
             setDisplayCart((d) => !d);
           }}
         >
-          <Cart src={"./assets/icon-cart.svg"} alt={"cart image"} />
-          {itemsInCart > 0 ? (
-            <CartItemsNumber>{itemsInCart}</CartItemsNumber>
-          ) : (
-            ""
-          )}
-        </CartContainer>
-        <UserAvatar
+          <CartContainer>
+            <Cart
+              src={"/frontendmentor_4/assets/icon-cart.svg"}
+              alt={"cart image button"}
+            />
+            {itemsInCart > 0 ? (
+              <CartItemsNumber>{itemsInCart}</CartItemsNumber>
+            ) : (
+              ""
+            )}
+          </CartContainer>
+        </ClickableWrapper>
+
+        <ClickableWrapper
           onClick={() => {
             setDisplayCart((d) => !d);
           }}
-          src={user?.avatar}
-          alt={"my image avatar"}
-        />
+        >
+          <UserAvatar src={user?.avatar} alt={"my image avatar button"} />
+        </ClickableWrapper>
         {displayCart ? <CartCard openUp={true} /> : ""}
         {!displayCart ? <CartCard openUp={false} /> : ""}
       </RightPanel>

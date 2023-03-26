@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { createContext, useState, useEffect } from "react";
 
 const Wrapper = styled.main`
-  height: 100%;
+  min-height: 100%;
 `;
 
 export const CartContext = createContext();
@@ -75,7 +75,7 @@ function MainBody() {
       >
         <Layout
           user={{
-            avatar: "./assets/image-avatar.png",
+            avatar: "/frontendmentor_4/assets/image-avatar.png",
           }}
         />
         <Product
@@ -92,20 +92,24 @@ function MainBody() {
             discount: 50,
             gallery: [
               {
-                img: "./assets/image-product-1.jpg",
-                thumbnail: "./assets/image-product-1-thumbnail.jpg",
+                img: "/frontendmentor_4/assets/image-product-1.jpg",
+                thumbnail:
+                  "/frontendmentor_4/assets/image-product-1-thumbnail.jpg",
               },
               {
-                img: "./assets/image-product-2.jpg",
-                thumbnail: "./assets/image-product-2-thumbnail.jpg",
+                img: "/frontendmentor_4/assets/image-product-2.jpg",
+                thumbnail:
+                  "/frontendmentor_4/assets/image-product-2-thumbnail.jpg",
               },
               {
-                img: "./assets/image-product-3.jpg",
-                thumbnail: "./assets/image-product-3-thumbnail.jpg",
+                img: "/frontendmentor_4/assets/image-product-3.jpg",
+                thumbnail:
+                  "/frontendmentor_4/assets/image-product-3-thumbnail.jpg",
               },
               {
-                img: "./assets/image-product-4.jpg",
-                thumbnail: "./assets/image-product-4-thumbnail.jpg",
+                img: "/frontendmentor_4/assets/image-product-4.jpg",
+                thumbnail:
+                  "/frontendmentor_4/assets/image-product-4-thumbnail.jpg",
               },
             ],
           }}

@@ -3,6 +3,7 @@ import { useState, useContext, useEffect } from "react";
 import { CartContext } from "../MainBody";
 import { QUERIES } from "../constants";
 import Gallery from "../Gallery";
+import ClickableWrapper from "../ClickableWrapper";
 
 const Wrapper = styled.section`
   padding-top: 64px;
@@ -173,6 +174,14 @@ const IncreaseDecrease = styled.img`
   width: 15px;
 
   ${(p) => (p.filled ? "opacity: 0.5;" : "")}
+
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+
+  &:focus {
+    outline: 3px outset var(--color-orange);
+    outline-offset: 6px;
+  }
 `;
 
 const ItemsSelected = styled.span`
@@ -187,7 +196,7 @@ const ItemsSelected = styled.span`
   }
 `;
 
-export const AddToCartButton = styled.div`
+export const AddToCartButton = styled.button`
   padding: 12px 0px;
   display: grid;
   place-content: center;
@@ -202,6 +211,11 @@ export const AddToCartButton = styled.div`
   transition: all 0.3s ease-in-out;
 
   ${(p) => (p.filled ? "opacity: 0.5;" : "")}
+
+  &:focus {
+    outline: 3px outset var(--color-orange);
+    outline-offset: 6px;
+  }
 
   &:hover {
     ${(p) =>
@@ -294,7 +308,7 @@ function Product({ product, ...props }) {
 
         <AddToCartWrapper>
           <ItemCounter>
-            <IncreaseDecrease
+            <ClickableWrapper
               filled={filled}
               onClick={(e) => {
                 if (filled) {
@@ -304,11 +318,16 @@ function Product({ product, ...props }) {
 
                 setItems((i) => i + 1);
               }}
-              src={"./assets/icon-plus.svg"}
-              alt={"increase item count image"}
-            />
-            <ItemsSelected>{items}</ItemsSelected>
-            <IncreaseDecrease
+            >
+              <IncreaseDecrease
+                src={"/frontendmentor_4/assets/icon-plus.svg"}
+                alt={"increase item count image button"}
+              />
+            </ClickableWrapper>
+            <ItemsSelected aria-label={"number of product items selected"}>
+              {items}
+            </ItemsSelected>
+            <ClickableWrapper
               filled={filled}
               onClick={(e) => {
                 if (filled) {
@@ -323,13 +342,16 @@ function Product({ product, ...props }) {
                   return i - 1;
                 });
               }}
-              style={{ height: "5px" }}
-              src={"./assets/icon-minus.svg"}
-              alt={"increase item count image"}
-            />
+            >
+              <IncreaseDecrease
+                style={{ height: "5px" }}
+                src={"/frontendmentor_4/assets/icon-minus.svg"}
+                alt={"increase item count image button"}
+              />
+            </ClickableWrapper>
           </ItemCounter>
 
-          <AddToCartButton
+          <ClickableWrapper
             filled={filled}
             onClick={(e) => {
               if (filled) {
@@ -343,15 +365,18 @@ function Product({ product, ...props }) {
               }, 180);
               // fillCartWithProduct();
             }}
+            aria-label={"add product(s) to cart"}
           >
-            <ButtonInfo>
-              <ButtonCartIcon
-                src={"./assets/icon-cart.svg"}
-                alt={"cart icon"}
-              />
-              <ButtonCartLetters>Add to cart</ButtonCartLetters>
-            </ButtonInfo>
-          </AddToCartButton>
+            <AddToCartButton>
+              <ButtonInfo>
+                <ButtonCartIcon
+                  src={"/frontendmentor_4/assets/icon-cart.svg"}
+                  alt={"add to cart image"}
+                />
+                <ButtonCartLetters>Add to cart</ButtonCartLetters>
+              </ButtonInfo>
+            </AddToCartButton>
+          </ClickableWrapper>
         </AddToCartWrapper>
       </DetailsWrapper>
     </Wrapper>

@@ -2,6 +2,7 @@ import styled, { keyframes } from "styled-components";
 import { useState, useEffect, createContext } from "react";
 import GalleryFullscreen from "../GalleryFullscreen";
 import { QUERIES } from "../constants";
+import ClickableWrapper from "../ClickableWrapper";
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,6 +43,10 @@ const MainImage = styled.img`
     opacity: 0.7;
   }
 
+  &:focus {
+    outline: 3px outset var(--color-orange);
+  }
+
   @media ${QUERIES.phoneAndSmaller} {
     display: none;
   }
@@ -49,7 +54,7 @@ const MainImage = styled.img`
 
 export const ThumbnailRow = styled.div`
   display: flex;
-  gap: 24px;
+  gap: 20px;
   max-width: 444px;
   overflow: auto;
 
@@ -70,6 +75,10 @@ export const ThumbnailContainer = styled.div`
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
+
+  &:focus {
+    outline: 3px outset var(--color-orange);
+  }
 `;
 
 export const ThumbnailImage = styled.img`
@@ -133,31 +142,38 @@ function Gallery({ gallery, ...props }) {
       {fullscreen ? (
         <MainImage src={mainImage} alt={"main product image"} />
       ) : trigger ? (
-        <MainImage
+        <ClickableWrapper
           onClick={() => {
             setFullscreen(true);
           }}
-          src={mainImage}
-          alt={"main product image"}
-        />
+        >
+          <MainImage
+            src={mainImage}
+            alt={"main product image, switch to fullscreen button"}
+          />
+        </ClickableWrapper>
       ) : (
         ""
       )}
-      <ThumbnailRow trigger={trigger}>
+      <ThumbnailRow trigger={trigger} aria-label={"thumbnail navigation"}>
         {gallery.map((entry, idx) => (
-          <ThumbnailContainer
-            key={idx}
-            selected={idx === index}
+          <ClickableWrapper
             onClick={() => {
               setIndex(idx);
             }}
+            key={idx}
+            selected={idx === index}
           >
-            <ThumbnailImage
-              selected={idx === index}
-              src={entry.thumbnail}
-              alt={"product image " + idx}
-            />
-          </ThumbnailContainer>
+            <ThumbnailContainer>
+              <ThumbnailImage
+                selected={idx === index}
+                src={entry.thumbnail}
+                alt={
+                  "product image " + (idx + 1) + ", switch to fullscreen button"
+                }
+              />
+            </ThumbnailContainer>
+          </ClickableWrapper>
         ))}
       </ThumbnailRow>
     </Wrapper>

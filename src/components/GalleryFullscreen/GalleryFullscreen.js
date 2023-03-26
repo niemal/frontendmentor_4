@@ -8,6 +8,7 @@ import {
 } from "../Gallery";
 import { QUERIES } from "../constants";
 import { hoverSupported } from "../hoverSupported";
+import ClickableWrapper from "../ClickableWrapper";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -36,6 +37,11 @@ const Container = styled.div`
   width: max-content;
 `;
 
+const MyThumbnailRow = styled(ThumbnailRow)`
+  padding-left: 8px;
+  padding-right: 8px;
+`;
+
 const CloseButton = styled.img`
   object-fit: cover;
   width: 49px;
@@ -49,6 +55,12 @@ const CloseButton = styled.img`
   filter: invert(97%) sepia(97%) saturate(13%) hue-rotate(253deg)
     brightness(102%) contrast(100%);
   transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+
+  &:focus {
+    outline: 2px outset var(--color-orange);
+    outline-offset: 3px;
+  }
 
   &:hover {
     filter: invert(75%) sepia(77%) saturate(5301%) hue-rotate(349deg)
@@ -200,6 +212,11 @@ const LeftButtonContainer = styled.div`
   transition: all 0.3s ease-in-out;
   z-index: 4;
 
+  &:focus {
+    outline: 3px outset var(--color-orange);
+    outline-offset: -4px;
+  }
+
   ${hoverSupported(`
   &:hover { 
     background-color: var(--color-orange);
@@ -257,13 +274,16 @@ function GalleryFullscreen({ gallery, mobile }) {
   return (
     <Wrapper mobile={mobile}>
       <Container>
-        <CloseButton
+        <ClickableWrapper
           onClick={() => {
             setFullscreen(false);
           }}
-          src={"./assets/icon-close.svg"}
-          alt={"close gallery fullscreen button"}
-        />
+        >
+          <CloseButton
+            src={"/frontendmentor_4/assets/icon-close.svg"}
+            alt={"close gallery fullscreen button"}
+          />
+        </ClickableWrapper>
         <MainImageContainer trigger={myTrigger}>
           {myTrigger ? (
             <>
@@ -285,7 +305,8 @@ function GalleryFullscreen({ gallery, mobile }) {
           ) : (
             ""
           )}
-          <LeftButtonContainer
+
+          <ClickableWrapper
             onClick={() => {
               if (myIndex - 1 < 0) {
                 setMyIndex(gallery.length - 1);
@@ -295,13 +316,17 @@ function GalleryFullscreen({ gallery, mobile }) {
 
               setSlideRight(false);
             }}
+            aria-label={"Previous image gallery button"}
           >
-            <NextPreviousButton
-              src={"./assets/icon-previous.svg"}
-              alt={"previous image gallery view"}
-            />
-          </LeftButtonContainer>
-          <RightButtonContainer
+            <LeftButtonContainer>
+              <NextPreviousButton
+                src={"/frontendmentor_4/assets/icon-previous.svg"}
+                alt={"previous image gallery view"}
+              />
+            </LeftButtonContainer>
+          </ClickableWrapper>
+
+          <ClickableWrapper
             onClick={() => {
               if (myIndex + 1 === gallery.length) {
                 setMyIndex(0);
@@ -311,16 +336,19 @@ function GalleryFullscreen({ gallery, mobile }) {
 
               setSlideRight(true);
             }}
+            aria-label={"Next image gallery button"}
           >
-            <NextPreviousButton
-              src={"./assets/icon-next.svg"}
-              alt={"next image gallery view"}
-            />
-          </RightButtonContainer>
+            <RightButtonContainer>
+              <NextPreviousButton
+                src={"/frontendmentor_4/assets/icon-next.svg"}
+                alt={"Next image gallery button"}
+              />
+            </RightButtonContainer>
+          </ClickableWrapper>
         </MainImageContainer>
-        <ThumbnailRow trigger={trigger} fullscreen={fullscreen}>
+        <MyThumbnailRow trigger={trigger} fullscreen={fullscreen}>
           {gallery.map((entry, idx) => (
-            <ThumbnailContainer
+            <ClickableWrapper
               key={idx + " fullscreen"}
               selected={idx === myIndex}
               onClick={() => {
@@ -333,14 +361,18 @@ function GalleryFullscreen({ gallery, mobile }) {
                 setMyIndex(idx);
               }}
             >
-              <ThumbnailImage
-                selected={idx === myIndex}
-                src={entry.thumbnail}
-                alt={"product image " + idx}
-              />
-            </ThumbnailContainer>
+              <ThumbnailContainer>
+                <ThumbnailImage
+                  selected={idx === myIndex}
+                  src={entry.thumbnail}
+                  alt={
+                    "product image thumbnail  " + (idx + 1) + ", gallery button"
+                  }
+                />
+              </ThumbnailContainer>
+            </ClickableWrapper>
           ))}
-        </ThumbnailRow>
+        </MyThumbnailRow>
       </Container>
     </Wrapper>
   );
