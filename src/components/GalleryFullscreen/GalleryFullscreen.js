@@ -37,9 +37,20 @@ const Container = styled.div`
   width: max-content;
 `;
 
-const MyThumbnailRow = styled(ThumbnailRow)`
+const MyThumbnailRow = styled.div`
   padding-left: 8px;
   padding-right: 8px;
+  display: flex;
+  gap: 20px;
+  max-width: 444px;
+  overflow: auto;
+
+  ${(p) => (!p.trigger ? "margin-top: 394px;" : "")}
+  ${(p) => (!p.trigger && p.fullscreen ? "margin-top: 550px;" : "")}
+
+  @media ${QUERIES.phoneAndSmaller} {
+    display: none;
+  }
 `;
 
 const CloseButton = styled.img`

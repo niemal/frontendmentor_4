@@ -52,7 +52,7 @@ const MainImage = styled.img`
   }
 `;
 
-export const ThumbnailRow = styled.div`
+const ThumbnailRow = styled.div`
   display: flex;
   gap: 20px;
   max-width: 444px;
